@@ -1,0 +1,56 @@
+require('dotenv').config(); // Эта строка учит бота читать .env
+const TelegramBot = require('node-telegram-bot-api');
+const fs = require('fs');
+
+const token = Secret.env.BOT_TOKEN; 
+const bot = new TelegramBot(token, {polling: true});
+
+const PASSWORD = Secret.env.PASSWORD; 
+
+
+const ALLOWED_IDS = [5950590253, 0, 0, 0]; 
+
+const authorized = new Set();
+
+console.log("🤖 Бот запущен и готов к работе!");
+
+bot.on('message', (msg) => {
+    const chatId = msg.chat.id;
+    const text = msg.text;
+
+    // Проверка ID
+    if (!ALLOWED_IDS.includes(chatId)) {
+        return bot.sendMessage(chatId, "🚫 Доступ закрыт.");
+    }
+
+    // Ввод пароля
+    if (text === PASSWORD) {
+        authorized.add(chatId);
+        return bot.sendMessage(chatId, "🔓 Доступ разрешен! Команды:\n/add Название, Ссылка, Картинка\n/del Название");
+    }
+
+    if (!authorized.has(chatId)) {
+        return bot.sendMessage(chatId, "🔐 Введите пароль:");
+    }
+
+    // Команда добавления
+    if (text.startsWith('/add ')) {
+        const parts = text.replace('/add ', '').split(',').map(s => s.trim());
+        if (parts.length === 3) {
+            const [title, url, img] = parts;
+            let cards = JSON.parse(fs.readFileSync('storage.json', 'utf8'));
+            cards.push({ title, url, img });
+            fs.writeFileSync('storage.json', JSON.stringify(cards, null, 2));
+            bot.sendMessage(chatId, `✅ Карточка "${title}" добавлена на сайт!`);
+        }
+    }
+
+    // Команда удаления
+    if (text.startsWith('/del ')) {
+        const title = text.replace('/del ', '').trim();
+        let cards = JSON.parse(fs.readFileSync('storage.json', 'utf8'));
+        const newCards = cards.filter(c => c.title !== title);
+        fs.writeFileSync('storage.json', JSON.stringify(newCards, null, 2));
+        bot.sendMessage(chatId, `🗑 Карточка "${title}" удалена.`);
+    }
+});

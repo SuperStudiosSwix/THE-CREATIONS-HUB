@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+     <link rel="stylesheet" href="style.css">
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&family=Bitcount+Prop+Single:slnt,wght@-8,100..900&family=Science+Gothic:wght@100..900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <h1> Hello! </h1>
+    <div id="TheLogging">Enter you name and password 
+        <input id="Name" type="text" placeholder="Name">
+        <input type="password" id="password" placeholder="password">
+        <input type="email" placeholder="Gmail">
+        <button id="Reg" onclick="Register()">continue</button>
+    </div>
+   
+    <p class="Help"><a href="https://t.me/+hnoMbJ_JNUFiMmMy">Відповіді та допомога</a></p>
+        <p class="Help"><a href="https://www.youtube.com/@Swix-Swix">Ютуб канал</a></p>
+    <video autoplay loop muted playsinline class="bg">
+  <source src="bgvideo.mp4" type="video/mp4">
+</video>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+<script> 
+  var InputName = document.getElementById("Name");
+    var Inputpassword = document.getElementById("password");
+    var btnCNT = document.getElementById("Reg");
+    function Register() {
+      if (InputName.value === "" || Inputpassword.value === "") {
+        alert("Enter Password and Name!")
+        
+      } else {
+      document.cookie = "name=" + InputName.value + "; path=/";
+document.cookie = "password=" + Inputpassword.value + "; path=/";
+window.location = "Home.html"
+      }
+    }  
+</script>
+</body>
+</html>
