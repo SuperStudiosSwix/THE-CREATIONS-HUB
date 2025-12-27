@@ -1,12 +1,32 @@
-require('dotenv').config(); // Эта строка учит бота читать .env
+const express = require('express');
+const path = require('path');
+const app = express();
+const port = process.env.PORT || 3000;
+
+// Сервер будет показывать все файлы из твоей папки (HTML, CSS, JS)
+app.use(express.static(__dirname));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Home.html'));
+});
+
+app.listen(port, () => {
+    console.log(`Сервер запущен на порту ${port}`);
+});
+
+// Далее идет твой текущий код бота...
+
+
+
+require('dotenv').config({ path: './Secret.env' });
 const TelegramBot = require('node-telegram-bot-api');
 const fs = require('fs');
 
-const token = Secret.env.BOT_TOKEN; 
+const token = process.env.BOT_TOKEN; 
 const bot = new TelegramBot(token, {polling: true});
 
-const PASSWORD = Secret.env.PASSWORD; 
-
+// Вместо Secret.env.PASSWORD пишем:
+const PASSWORD = process.env.PASSWORD;
 
 const ALLOWED_IDS = [5950590253, 0, 0, 0]; 
 
