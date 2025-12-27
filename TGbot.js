@@ -37,23 +37,18 @@ console.log("🤖 Бот запущен и готов к работе!");
 bot.on('message', (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text;
-
-    // Проверка ID
     if (!ALLOWED_IDS.includes(chatId)) {
         return bot.sendMessage(chatId, "🚫 Доступ закрыт.");
     }
 
-    // Ввод пароля
     if (text === PASSWORD) {
         authorized.add(chatId);
-        return bot.sendMessage(chatId, "🔓 Доступ разрешен! Команды:\n/add Название, Ссылка, Картинка\n/del Название");
+        return bot.sendMessage(chatId, "🔓 Доступ разрешен! Команды:\n/add Название, Ссылка на игру, ссылку на Картинку\n/del Название");
     }
 
     if (!authorized.has(chatId)) {
         return bot.sendMessage(chatId, "🔐 Введите пароль:");
     }
-
-    // Команда добавления
     if (text.startsWith('/add ')) {
         const parts = text.replace('/add ', '').split(',').map(s => s.trim());
         if (parts.length === 3) {
@@ -64,8 +59,6 @@ bot.on('message', (msg) => {
             bot.sendMessage(chatId, `✅ Карточка "${title}" добавлена на сайт!`);
         }
     }
-
-    // Команда удаления
     if (text.startsWith('/del ')) {
         const title = text.replace('/del ', '').trim();
         let cards = JSON.parse(fs.readFileSync('storage.json', 'utf8'));

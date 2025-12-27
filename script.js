@@ -21,14 +21,12 @@ if (titleEl) titleEl.innerHTML = titleText;
     container.appendChild(newCard);
 }
 createNewCard("Egg Kreyes Hunt <br> Category: Simulator <br>Creators: <br>Swix,Zrkde,Kreyes,Rollton,Grisha <br> Игра не выйшла!", "IMGs/KreyesHunt.webp"); 
-createNewCard("TEST", "");
-createNewCard("хотите чтобы ваш проект попал на сайт? нажми на картинку и напиште нашему Telegtam botу!", "MsgnPNG.png", "https://t.me/+bYEZR8AmTOtkZjFi");
+createNewCard("хотите чтобы ваш проект попал на сайт? нажми на картинку и напиште в группу телеграм!", "MsgnPNG.png", "https://t.me/+bYEZR8AmTOtkZjFi");
 
 fetch('storage.json')
     .then(response => response.json())
     .then(data => {
         data.forEach(card => {
-        
             createNewCard(card.title, card.img, card.url);
         });
     });
